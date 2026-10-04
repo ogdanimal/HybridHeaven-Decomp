@@ -1,0 +1,39 @@
+# Directories
+__pycache__/
+.splat/
+.venv/
+.vscode/
+asm/
+bin/
+build/
+expected/
+nonmatchings/
+keep/
+
+# Files
+*.bin
+*.z64
+*.zip
+*.ld
+# ...except the cross-overlay symbol definitions, which are generated but
+# committed so a clean checkout links. See tools/gen_overlay_syms.py.
+!config/*/overlay_syms.ld
+*auto.txt
+.splat_cache
+context.c
+
+# Manifest files
+rommy.yaml
+
+# Windows ADS artifacts / original ROM drop
+*:Zone.Identifier
+Hybrid Heaven (USA)/
+
+# Local editor/agent session config -- per-clone, not project state
+.claude/
+
+# Internal working notes / session context -- kept locally, not published.
+CLAUDE.md
+
+# Fetched by the Makefile (decompals/ido-static-recomp), not committed
+tools/ido-5.3/

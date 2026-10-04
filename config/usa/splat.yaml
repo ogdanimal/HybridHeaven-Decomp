@@ -1,0 +1,3178 @@
+name: Hybrid Heaven (USA)
+sha1: 61ed3d5d5390c3c17b4026797b93be50a61dd6f2
+
+options:
+  basename: hybridheaven
+  compiler: IDO
+  platform: n64
+
+  header_encoding: ASCII
+
+  target_path: config/usa/baserom.decompressed.z64
+  ld_script_path: .splat/usa/hybridheaven.ld
+  elf_path: build/usa/hybridheaven.elf
+  base_path: ../../
+
+  undefined_funcs_auto_path: .splat/usa/undefined_funcs_auto.ld
+  undefined_syms_auto_path: .splat/usa/undefined_syms_auto.ld
+
+  symbol_addrs_path:
+    - config/usa/symbol_addrs/symbol_addrs.txt
+    - config/usa/symbol_addrs/libultra_syms.txt
+  reloc_addrs_path:
+    - config/usa/reloc_addrs/reloc_addrs.txt
+
+  asm_path: asm/usa
+  src_path: src
+  build_path: build/usa
+  asset_path: bin/usa
+
+  symbol_name_format: $VRAM_$ROM
+
+  find_file_boundaries: True
+  migrate_rodata_to_functions: True
+  rodata_string_guesser_level: 2
+  gfx_ucode: f3dex
+
+  # This game's sections are packed with only 4-byte alignment. splat's default
+  # `. = ALIGN(., 16)` after every section/segment inserts padding that shifts
+  # the whole image, so turn both off.
+  ld_align_section_vram_end: False
+  ld_align_segment_vram_end: False
+
+segments:
+  - name: header
+    type: header
+    start: 0x0
+
+  - name: ipl3
+    type: bin
+    start: 0x40
+
+  # subalign 4, not 16: the .text/ucode boundary at 0x35D30 is only
+  # 4-byte aligned in the original, so forcing 16 inserts padding and shifts
+  # the whole image.
+  - name: entry
+    type: code
+    start: 0x1000
+    vram: 0x80000400
+    subalign: 4
+    subsegments:
+    - [0x1000, hasm, entry]
+
+  - name: main
+    type: code
+    start: 0x1060
+    vram: 0x80000460
+    bss_size: 0x80DC0
+    subalign: 4
+    subsegments:
+    - [0x1060, asm, main]
+    - [0x1C60, asm, main_1C60]
+    - [0x27C0, asm, main_27C0]
+    - [0x2A70, asm, main_2A70]
+    - [0x2CB0, asm, main_2CB0]
+    - [0x30D0, asm, main_30D0]
+    - [0x42D0, asm, main_42D0]
+    - [0x4F10, asm, main_4F10]
+    - [0x5E70, asm, main_5E70]
+    - [0x7390, asm, main_7390]
+    - [0x8350, asm, main_8350]
+    - [0x8770, asm, main_8770]
+    - [0x87D0, asm, main_87D0]
+    - [0x9D90, asm, main_9D90]
+    - [0xBBE0, asm, main_BBE0]
+    - [0xDD00, asm, main_DD00]
+    - [0xE9B0, asm, main_E9B0]
+    - [0x12500, asm, main_12500]
+    - [0x152A0, asm, main_152A0]
+    - [0x1B090, asm, main_1B090]
+    - [0x1F6D0, asm, main_1F6D0]
+    - [0x1FD60, asm, main_1FD60]
+    - [0x202D0, asm, main_202D0]
+    - [0x20420, asm, main_20420]
+    - [0x20DD0, asm, main_20DD0]
+    - [0x24FF0, asm, main_24FF0]
+    - [0x26F00, asm, main_26F00]
+    - [0x27050, asm, main_27050]
+    - [0x271F0, asm, main_271F0]
+    - [0x273F0, asm, main_273F0]
+    - [0x275F0, asm, main_275F0]
+    - [0x278E0, asm, main_278E0]
+    - [0x279F0, asm, main_279F0]
+    - [0x285B0, asm, main_285B0]
+    - [0x28690, asm, main_28690]
+    - [0x28E60, asm, main_28E60]
+    - [0x28FB0, asm, main_28FB0]
+    - [0x29190, asm, main_29190]
+    - [0x293E0, asm, main_293E0]
+    - [0x29610, c, libultra/os/virtualtophysical]
+    - [0x29690, asm, main_29690]
+    - [0x29710, asm, main_29710]
+    - [0x29AC0, asm, main_29AC0]
+    - [0x29AE0, asm, main_29AE0]
+    - [0x29BF0, asm, main_29BF0]
+    - [0x29E80, asm, main_29E80]
+    - [0x2A0D0, asm, main_2A0D0]
+    - [0x2A180, asm, main_2A180]
+    - [0x2A1D0, asm, main_2A1D0]
+    - [0x2A290, asm, main_2A290]
+    - [0x2A700, asm, main_2A700]
+    - [0x2A930, c, libultra/gu/mtxutil]
+    - [0x2ABA0, asm, main_2ABA0]
+    - [0x2AC10, asm, main_2AC10]
+    - [0x2AF50, asm, main_2AF50]
+    - [0x2B3D0, asm, main_2B3D0]
+    - [0x2B7A0, asm, main_2B7A0]
+    - [0x2B860, asm, main_2B860]
+    - [0x2BAA0, asm, main_2BAA0]
+    - [0x2BF80, c, libultra/audio/synsetpan]
+    - [0x2C010, asm, main_2C010]
+    - [0x2CB90, asm, main_2CB90]
+    - [0x2CBA0, asm, main_2CBA0]
+    - [0x2CCB0, asm, main_2CCB0]
+    - [0x2CDD0, asm, main_2CDD0]
+    - [0x2D450, asm, main_2D450]
+    - [0x2DC00, asm, main_2DC00]
+    - [0x2E9B0, c, libultra/audio/auxbus]
+    - [0x2EAC0, asm, main_2EAC0]
+    - [0x2F740, asm, main_2F740]
+    - [0x2FA40, asm, main_2FA40]
+    - [0x2FC10, asm, main_2FC10]
+    - [0x30760, asm, main_30760]
+    - [0x30820, asm, main_30820]
+    - [0x30830, asm, main_30830]
+    - [0x31080, c, libultra/audio/filter]
+    - [0x310A0, asm, main_310A0]
+    - [0x310F0, asm, main_310F0]
+    - [0x311D0, c, libultra/audio/heapinit]
+    - [0x31210, asm, main_31210]
+    - [0x31240, asm, main_31240]
+    - [0x312C0, asm, main_312C0]
+    - [0x31370, asm, main_31370]
+    - [0x31410, asm, main_31410]
+    - [0x31530, asm, main_31530]
+    - [0x315B0, c, libultra/io/sp]
+    - [0x315E0, asm, main_315E0]
+    - [0x31610, asm, main_31610]
+    - [0x31860, asm, main_31860]
+    - [0x319C0, asm, main_319C0]
+    - [0x31D90, asm, main_31D90]
+    - [0x31E20, asm, main_31E20]
+    - [0x32270, asm, main_32270]
+    - [0x323C0, asm, main_323C0]
+    - [0x323D0, asm, main_323D0]
+    - [0x326E0, asm, main_326E0]
+    - [0x32760, asm, main_32760]
+    - [0x327C0, asm, main_327C0]
+    - [0x32A30, asm, main_32A30]
+    - [0x32BF0, asm, main_32BF0]
+    - [0x32F60, asm, main_32F60]
+    - [0x33260, asm, main_33260]
+    - [0x332F0, asm, main_332F0]
+    - [0x33320, asm, main_33320]
+    - [0x33490, asm, main_33490]
+    - [0x335F0, asm, main_335F0]
+    - [0x33660, asm, main_33660]
+    - [0x337E0, asm, main_337E0]
+    - [0x33940, asm, main_33940]
+    - [0x339C0, asm, main_339C0]
+    - [0x33BB0, asm, main_33BB0]
+    - [0x33EC0, asm, main_33EC0]
+    - [0x34870, asm, main_34870]
+    - [0x348D0, asm, main_348D0]
+    - [0x34920, asm, main_34920]
+    - [0x34A10, asm, main_34A10]
+    - [0x34C60, asm, main_34C60]
+    - [0x34E90, asm, main_34E90]
+    - [0x35000, asm, main_35000]
+    - [0x35160, asm, main_35160]
+    - [0x35240, asm, main_35240]
+    - [0x35290, c, libultra/io/spsetstat]
+    - [0x352A0, c, libultra/io/spgetstat]
+    - [0x352B0, asm, main_352B0]
+    - [0x352C0, asm, main_352C0]
+    - [0x355D0, asm, main_355D0]
+    - [0x355E0, asm, main_355E0]
+    - [0x35610, c, libultra/audio/heapalloc]
+    - [0x35670, asm, main_35670]
+    - [0x35680, asm, main_35680]
+    - [0x35890, asm, main_35890]
+    - [0x35A40, c, libultra/audio/synallocfx]
+    - [0x35AE0, c, libultra/audio/synstopvoice]
+    - [0x35B60, c, libultra/audio/syndelete]
+    - [0x35B70, asm, main_35B70]
+    - [0x35C20, asm, main_35C20]
+    - [0x35CD0, asm, main_35CD0]
+    # RSP microcode and .data/.rodata. Split these out into rodata/data/ucode
+    # subsegments as they get identified.
+    - [0x35D30, data, main_data]
+    - { start: 0x5E7D0, type: bss, vram: 0x8005DBD0, name: main }
+
+  - name: assets
+    type: bin
+    start: 0x5E7D0
+
+  - name: file_0
+    type: bin
+    start: 0x4E5F40
+
+  - name: file_7
+    type: code
+    start: 0x4E6F40
+    vram: 0x80107830
+    bss_size: 0x2DC80
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_7
+    subsegments:
+    - [0x4E6F40, asm, file_7]
+    - [0x532780, data, file_7_data]
+    - { start: 0x570C30, type: bss, vram: 0x80191520, name: file_7 }
+
+  - name: file_8
+    type: code
+    start: 0x570C30
+    vram: 0x801BF1A0
+    bss_size: 0xA90
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_8
+    subsegments:
+    - [0x570C30, asm, file_8]
+    - [0x5923F0, data, file_8_data]
+    - { start: 0x595AA0, type: bss, vram: 0x801E4010, name: file_8 }
+
+  - name: file_9
+    type: code
+    start: 0x595AA0
+    vram: 0x801E4AA0
+    bss_size: 0x1A0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_9
+    subsegments:
+    - [0x595AA0, asm, file_9]
+    - [0x5C7B70, data, file_9_data]
+    - { start: 0x5CBFB0, type: bss, vram: 0x8021AFB0, name: file_9 }
+
+  - name: file_10
+    type: code
+    start: 0x5CBFB0
+    vram: 0x8021B150
+    bss_size: 0x1C0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_10
+    subsegments:
+    - [0x5CBFB0, asm, file_10]
+    - [0x5ED0B0, data, file_10_data]
+    - { start: 0x5F1590, type: bss, vram: 0x80240730, name: file_10 }
+
+  - name: file_11
+    type: code
+    start: 0x5F1590
+    vram: 0x802408F0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_11
+    subsegments:
+    - [0x5F1590, asm, file_11]
+    - [0x5F52C0, data, file_11_data]
+    - { start: 0x5FA1A0, type: bss, vram: 0x80249500, name: file_11 }
+
+  - name: file_12
+    type: code
+    start: 0x5FA1A0
+    vram: 0x802408F0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_12
+    subsegments:
+    - [0x5FA1A0, asm, file_12]
+    - [0x5FD590, data, file_12_data]
+
+  - name: file_13
+    type: code
+    start: 0x603420
+    vram: 0x802408F0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_13
+    subsegments:
+    - [0x603420, asm, file_13]
+    - [0x609450, data, file_13_data]
+    - { start: 0x60D670, type: bss, vram: 0x8024AB40, name: file_13 }
+
+  - name: file_14
+    type: code
+    start: 0x60D670
+    vram: 0x802408F0
+    bss_size: 0xA0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_14
+    subsegments:
+    - [0x60D670, asm, file_14]
+    - [0x61ED80, data, file_14_data]
+    - { start: 0x626FF0, type: bss, vram: 0x8025A270, name: file_14 }
+
+  - name: file_15
+    type: code
+    start: 0x626FF0
+    vram: 0x802408F0
+    bss_size: 0x40
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_15
+    subsegments:
+    - [0x626FF0, asm, file_15]
+    - [0x62FDA0, data, file_15_data]
+    - { start: 0x635BF0, type: bss, vram: 0x8024F4F0, name: file_15 }
+
+  - name: file_16
+    type: code
+    start: 0x635BF0
+    vram: 0x802408F0
+    bss_size: 0x90
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_16
+    subsegments:
+    - [0x635BF0, asm, file_16]
+    - [0x64D890, data, file_16_data]
+    - { start: 0x6530A0, type: bss, vram: 0x8025DDA0, name: file_16 }
+
+  - name: file_17
+    type: code
+    start: 0x6530A0
+    vram: 0x802408F0
+    bss_size: 0x110
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_17
+    subsegments:
+    - [0x6530A0, asm, file_17]
+    - [0x65F8D0, data, file_17_data]
+    - { start: 0x66EE90, type: bss, vram: 0x8025C6E0, name: file_17 }
+
+  - name: file_18
+    type: code
+    start: 0x66EE90
+    vram: 0x802408F0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_18
+    subsegments:
+    - [0x66EE90, asm, file_18]
+    - [0x66F020, data, file_18_data]
+
+  - name: file_19
+    type: code
+    start: 0x671030
+    vram: 0x802408F0
+    bss_size: 0x20
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_19
+    subsegments:
+    - [0x671030, asm, file_19]
+    - [0x6749A0, data, file_19_data]
+    - { start: 0x6773A0, type: bss, vram: 0x80246C60, name: file_19 }
+
+  - name: file_20
+    type: code
+    start: 0x6773A0
+    vram: 0x802408F0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_20
+    subsegments:
+    - [0x6773A0, asm, file_20]
+    - [0x67C490, data, file_20_data]
+    - { start: 0x68DC00, type: bss, vram: 0x80257150, name: file_20 }
+
+  - name: file_21
+    type: code
+    start: 0x68DC00
+    vram: 0x802408F0
+    bss_size: 0x80
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_21
+    subsegments:
+    - [0x68DC00, asm, file_21]
+    - [0x693CD0, data, file_21_data]
+    - { start: 0x69FBB0, type: bss, vram: 0x802528A0, name: file_21 }
+
+  - name: file_22
+    type: bin
+    start: 0x69FBB0
+
+  - name: file_23
+    type: code
+    start: 0x6A1BC0
+    vram: 0x801BF1A0
+    bss_size: 0x120
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_23
+    subsegments:
+    - [0x6A1BC0, asm, file_23]
+    - [0x6AF200, data, file_23_data]
+    - { start: 0x6B2710, type: bss, vram: 0x801CFCF0, name: file_23 }
+
+  - name: file_24
+    type: code
+    start: 0x6B2710
+    vram: 0x801BF1A0
+    bss_size: 0x4570
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_24
+    subsegments:
+    - [0x6B2710, asm, file_24]
+    - [0x6CC170, data, file_24_data]
+
+  - name: file_25
+    type: code
+    start: 0x6D0BE0
+    vram: 0x801E1BE0
+    bss_size: 0xA0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_25
+    subsegments:
+    - [0x6D0BE0, asm, file_25]
+    - [0x6E91F0, data, file_25_data]
+    - { start: 0x6EC420, type: bss, vram: 0x801FD420, name: file_25 }
+
+  - name: file_26
+    type: code
+    start: 0x6EC420
+    vram: 0x801E1BE0
+    bss_size: 0x20
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_26
+    subsegments:
+    - [0x6EC420, asm, file_26]
+    - [0x6FC780, data, file_26_data]
+    - { start: 0x7002A0, type: bss, vram: 0x801F5A60, name: file_26 }
+
+  - name: file_27
+    type: code
+    start: 0x7002A0
+    vram: 0x801E1BE0
+    bss_size: 0x30
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_27
+    subsegments:
+    - [0x7002A0, asm, file_27]
+    - [0x71F800, data, file_27_data]
+    - { start: 0x7274D0, type: bss, vram: 0x80208E10, name: file_27 }
+
+  - name: file_28
+    type: code
+    start: 0x7274D0
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_28
+    subsegments:
+    - [0x7274D0, asm, file_28]
+    - [0x72B2C0, data, file_28_data]
+
+  - name: file_29
+    type: code
+    start: 0x72C430
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_29
+    subsegments:
+    - [0x72C430, asm, file_29]
+    - [0x733F10, data, file_29_data]
+
+  - name: file_30
+    type: code
+    start: 0x736FD0
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_30
+    subsegments:
+    - [0x736FD0, asm, file_30]
+    - [0x737E20, data, file_30_data]
+
+  - name: file_31
+    type: code
+    start: 0x738220
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_31
+    subsegments:
+    - [0x738220, asm, file_31]
+    - [0x73FC80, data, file_31_data]
+
+  - name: file_32
+    type: code
+    start: 0x742000
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_32
+    subsegments:
+    - [0x742000, asm, file_32]
+    - [0x751C80, data, file_32_data]
+
+  - name: file_33
+    type: code
+    start: 0x754F10
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_33
+    subsegments:
+    - [0x754F10, asm, file_33]
+    - [0x75B790, data, file_33_data]
+
+  - name: file_34
+    type: code
+    start: 0x75CA60
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_34
+    subsegments:
+    - [0x75CA60, asm, file_34]
+    - [0x762D60, data, file_34_data]
+
+  - name: file_35
+    type: code
+    start: 0x763BE0
+    vram: 0x801E1BE0
+    bss_size: 0x60
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_35
+    subsegments:
+    - [0x763BE0, asm, file_35]
+    - [0x766B30, data, file_35_data]
+    - { start: 0x767200, type: bss, vram: 0x801E5200, name: file_35 }
+
+  - name: file_36
+    type: code
+    start: 0x767200
+    vram: 0x801E1BE0
+    bss_size: 0xA0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_36
+    subsegments:
+    - [0x767200, asm, file_36]
+    - [0x76B270, data, file_36_data]
+    - { start: 0x76C430, type: bss, vram: 0x801E6E10, name: file_36 }
+
+  - name: file_37
+    type: code
+    start: 0x76C430
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_37
+    subsegments:
+    - [0x76C430, asm, file_37]
+    - [0x771110, data, file_37_data]
+
+  - name: file_38
+    type: code
+    start: 0x771B10
+    vram: 0x801E1BE0
+    bss_size: 0x40
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_38
+    subsegments:
+    - [0x771B10, asm, file_38]
+    - [0x779D20, data, file_38_data]
+    - { start: 0x77B300, type: bss, vram: 0x801EB3D0, name: file_38 }
+
+  - name: file_39
+    type: code
+    start: 0x77B300
+    vram: 0x801E1BE0
+    bss_size: 0xC0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_39
+    subsegments:
+    - [0x77B300, asm, file_39]
+    - [0x780C40, data, file_39_data]
+    - { start: 0x782030, type: bss, vram: 0x801E8910, name: file_39 }
+
+  - name: file_40
+    type: code
+    start: 0x782030
+    vram: 0x801E1BE0
+    bss_size: 0xE0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_40
+    subsegments:
+    - [0x782030, asm, file_40]
+    - [0x7880C0, data, file_40_data]
+    - { start: 0x788DB0, type: bss, vram: 0x801E8960, name: file_40 }
+
+  - name: file_41
+    type: code
+    start: 0x788DB0
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_41
+    subsegments:
+    - [0x788DB0, asm, file_41]
+    - [0x78B320, data, file_41_data]
+
+  - name: file_42
+    type: code
+    start: 0x78C280
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_42
+    subsegments:
+    - [0x78C280, asm, file_42]
+    - [0x793510, data, file_42_data]
+
+  - name: file_43
+    type: code
+    start: 0x7948B0
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_43
+    subsegments:
+    - [0x7948B0, asm, file_43]
+    - [0x79ECF0, data, file_43_data]
+    - { start: 0x7A0BC0, type: bss, vram: 0x801EDEF0, name: file_43 }
+
+  - name: file_44
+    type: code
+    start: 0x7A0BC0
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_44
+    subsegments:
+    - [0x7A0BC0, asm, file_44]
+    - [0x7A6770, data, file_44_data]
+    - { start: 0x7A7CF0, type: bss, vram: 0x801E8D10, name: file_44 }
+
+  - name: file_45
+    type: code
+    start: 0x7A7CF0
+    vram: 0x801E1BE0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_45
+    subsegments:
+    - [0x7A7CF0, asm, file_45]
+    - [0x7AF580, data, file_45_data]
+
+  - name: file_46
+    type: code
+    start: 0x7B14E0
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_46
+    subsegments:
+    - [0x7B14E0, asm, file_46]
+    - [0x7B34E0, data, file_46_data]
+    - { start: 0x7B3750, type: bss, vram: 0x801E3E50, name: file_46 }
+
+  - name: file_47
+    type: code
+    start: 0x7B3750
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_47
+    subsegments:
+    - [0x7B3750, asm, file_47]
+    - [0x7BB390, data, file_47_data]
+    - { start: 0x7BC160, type: bss, vram: 0x801EA5F0, name: file_47 }
+
+  - name: file_48
+    type: code
+    start: 0x7BC160
+    vram: 0x801E1BE0
+    bss_size: 0x30
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_48
+    subsegments:
+    - [0x7BC160, asm, file_48]
+    - [0x7C0D90, data, file_48_data]
+    - { start: 0x7C1CE0, type: bss, vram: 0x801E7760, name: file_48 }
+
+  - name: file_49
+    type: code
+    start: 0x7C1CE0
+    vram: 0x801E1BE0
+    bss_size: 0x70
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_49
+    subsegments:
+    - [0x7C1CE0, asm, file_49]
+    - [0x7C3A90, data, file_49_data]
+    - { start: 0x7C3E90, type: bss, vram: 0x801E3D90, name: file_49 }
+
+  - name: file_50
+    type: code
+    start: 0x7C3E90
+    vram: 0x801E1BE0
+    bss_size: 0x20
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_50
+    subsegments:
+    - [0x7C3E90, asm, file_50]
+    - [0x7C9020, data, file_50_data]
+    - { start: 0x7C9C00, type: bss, vram: 0x801E7950, name: file_50 }
+
+  - name: file_51
+    type: code
+    start: 0x7C9C00
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_51
+    subsegments:
+    - [0x7C9C00, asm, file_51]
+    - [0x7CCA90, data, file_51_data]
+    - { start: 0x7CDAA0, type: bss, vram: 0x801E5A80, name: file_51 }
+
+  - name: file_52
+    type: code
+    start: 0x7CDAA0
+    vram: 0x801E1BE0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_52
+    subsegments:
+    - [0x7CDAA0, asm, file_52]
+    - [0x7D3880, data, file_52_data]
+    - { start: 0x7D5850, type: bss, vram: 0x801E9990, name: file_52 }
+
+  - name: file_53
+    type: code
+    start: 0x7D5850
+    vram: 0x802408F0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_53
+    subsegments:
+    - [0x7D5850, asm, file_53]
+    - [0x7DB720, data, file_53_data]
+    - { start: 0x7DD760, type: bss, vram: 0x80248800, name: file_53 }
+
+  - name: file_54
+    type: code
+    start: 0x7DD760
+    vram: 0x803837E0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_54
+    subsegments:
+    - [0x7DD760, asm, file_54]
+    - [0x7DE2E0, data, file_54_data]
+    - { start: 0x7E7D40, type: bss, vram: 0x8038DDC0, name: file_54 }
+
+  - name: file_55
+    type: code
+    start: 0x7E7D40
+    vram: 0x803757E0
+    bss_size: 0xAF0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_55
+    subsegments:
+    - [0x7E7D40, asm, file_55]
+    - [0x7FA9F0, data, file_55_data]
+    - { start: 0x7FC440, type: bss, vram: 0x80389EE0, name: file_55 }
+
+  - name: file_56
+    type: code
+    start: 0x7FC440
+    vram: 0x80358820
+    bss_size: 0x400
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_56
+    subsegments:
+    - [0x7FC440, asm, file_56]
+    - [0x8290F0, data, file_56_data]
+    - { start: 0x8307E0, type: bss, vram: 0x8038CBC0, name: file_56 }
+
+  - name: file_57
+    type: code
+    start: 0x8307E0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_57
+    subsegments:
+    - [0x8307E0, asm, file_57]
+    - [0x831450, data, file_57_data]
+
+  - name: file_58
+    type: code
+    start: 0x8314E0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_58
+    subsegments:
+    - [0x8314E0, asm, file_58]
+    - [0x831E80, data, file_58_data]
+
+  - name: file_59
+    type: code
+    start: 0x831F10
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_59
+    subsegments:
+    - [0x831F10, asm, file_59]
+    - [0x832750, data, file_59_data]
+
+  - name: file_60
+    type: code
+    start: 0x832810
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_60
+    subsegments:
+    - [0x832810, asm, file_60]
+    - [0x833200, data, file_60_data]
+
+  - name: file_61
+    type: code
+    start: 0x833290
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_61
+    subsegments:
+    - [0x833290, asm, file_61]
+    - [0x833DA0, data, file_61_data]
+
+  - name: file_62
+    type: code
+    start: 0x833E60
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_62
+    subsegments:
+    - [0x833E60, asm, file_62]
+    - [0x834870, data, file_62_data]
+
+  - name: file_63
+    type: code
+    start: 0x834900
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_63
+    subsegments:
+    - [0x834900, asm, file_63]
+    - [0x835530, data, file_63_data]
+
+  - name: file_64
+    type: code
+    start: 0x8355C0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_64
+    subsegments:
+    - [0x8355C0, asm, file_64]
+    - [0x835D20, data, file_64_data]
+
+  - name: file_65
+    type: code
+    start: 0x835DB0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_65
+    subsegments:
+    - [0x835DB0, asm, file_65]
+    - [0x836910, data, file_65_data]
+
+  - name: file_66
+    type: code
+    start: 0x836990
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_66
+    subsegments:
+    - [0x836990, asm, file_66]
+    - [0x837680, data, file_66_data]
+
+  - name: file_67
+    type: code
+    start: 0x837710
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_67
+    subsegments:
+    - [0x837710, asm, file_67]
+    - [0x838410, data, file_67_data]
+
+  - name: file_68
+    type: code
+    start: 0x8384A0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_68
+    subsegments:
+    - [0x8384A0, asm, file_68]
+    - [0x838F10, data, file_68_data]
+
+  - name: file_69
+    type: code
+    start: 0x838FB0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_69
+    subsegments:
+    - [0x838FB0, asm, file_69]
+    - [0x839C60, data, file_69_data]
+
+  - name: file_70
+    type: code
+    start: 0x839CF0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_70
+    subsegments:
+    - [0x839CF0, asm, file_70]
+    - [0x83A750, data, file_70_data]
+
+  - name: file_71
+    type: code
+    start: 0x83A7E0
+    vram: 0x8038CFC0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_71
+    subsegments:
+    - [0x83A7E0, asm, file_71]
+    - [0x83B250, data, file_71_data]
+    - { start: 0x83B2E0, type: bss, vram: 0x8038DAC0, name: file_71 }
+
+  - name: file_72
+    type: code
+    start: 0x83B2E0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_72
+    subsegments:
+    - [0x83B2E0, asm, file_72]
+    - [0x83BF50, data, file_72_data]
+
+  - name: file_73
+    type: code
+    start: 0x83BFD0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_73
+    subsegments:
+    - [0x83BFD0, asm, file_73]
+    - [0x83CBD0, data, file_73_data]
+
+  - name: file_74
+    type: code
+    start: 0x83CC60
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_74
+    subsegments:
+    - [0x83CC60, asm, file_74]
+    - [0x83D690, data, file_74_data]
+
+  - name: file_75
+    type: code
+    start: 0x83D730
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_75
+    subsegments:
+    - [0x83D730, asm, file_75]
+    - [0x83E190, data, file_75_data]
+
+  - name: file_76
+    type: code
+    start: 0x83E220
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_76
+    subsegments:
+    - [0x83E220, asm, file_76]
+    - [0x83ECF0, data, file_76_data]
+
+  - name: file_77
+    type: code
+    start: 0x83ED80
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_77
+    subsegments:
+    - [0x83ED80, asm, file_77]
+    - [0x83F5C0, data, file_77_data]
+
+  - name: file_78
+    type: code
+    start: 0x83F650
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_78
+    subsegments:
+    - [0x83F650, asm, file_78]
+    - [0x840100, data, file_78_data]
+
+  - name: file_79
+    type: code
+    start: 0x8401A0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_79
+    subsegments:
+    - [0x8401A0, asm, file_79]
+    - [0x8409B0, data, file_79_data]
+
+  - name: file_80
+    type: code
+    start: 0x840A40
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_80
+    subsegments:
+    - [0x840A40, asm, file_80]
+    - [0x841270, data, file_80_data]
+
+  - name: file_81
+    type: code
+    start: 0x841300
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_81
+    subsegments:
+    - [0x841300, asm, file_81]
+    - [0x841CB0, data, file_81_data]
+
+  - name: file_82
+    type: code
+    start: 0x841D50
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_82
+    subsegments:
+    - [0x841D50, asm, file_82]
+    - [0x842670, data, file_82_data]
+
+  - name: file_83
+    type: code
+    start: 0x842700
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_83
+    subsegments:
+    - [0x842700, asm, file_83]
+    - [0x843350, data, file_83_data]
+
+  - name: file_84
+    type: code
+    start: 0x8433D0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_84
+    subsegments:
+    - [0x8433D0, asm, file_84]
+    - [0x843F50, data, file_84_data]
+
+  - name: file_85
+    type: code
+    start: 0x843FE0
+    vram: 0x8038CFC0
+    bss_size: 0x10
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_85
+    subsegments:
+    - [0x843FE0, asm, file_85]
+    - [0x844C40, data, file_85_data]
+    - { start: 0x844CD0, type: bss, vram: 0x8038DCB0, name: file_85 }
+
+  - name: file_86
+    type: code
+    start: 0x844CD0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_86
+    subsegments:
+    - [0x844CD0, asm, file_86]
+    - [0x845B30, data, file_86_data]
+
+  - name: file_87
+    type: code
+    start: 0x845BD0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_87
+    subsegments:
+    - [0x845BD0, asm, file_87]
+    - [0x846590, data, file_87_data]
+
+  - name: file_88
+    type: code
+    start: 0x846620
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_88
+    subsegments:
+    - [0x846620, asm, file_88]
+    - [0x847390, data, file_88_data]
+
+  - name: file_89
+    type: code
+    start: 0x847440
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_89
+    subsegments:
+    - [0x847440, asm, file_89]
+    - [0x847DF0, data, file_89_data]
+
+  - name: file_90
+    type: code
+    start: 0x847E80
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_90
+    subsegments:
+    - [0x847E80, asm, file_90]
+    - [0x848980, data, file_90_data]
+
+  - name: file_91
+    type: code
+    start: 0x848A20
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_91
+    subsegments:
+    - [0x848A20, asm, file_91]
+    - [0x8493B0, data, file_91_data]
+
+  - name: file_92
+    type: code
+    start: 0x849470
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_92
+    subsegments:
+    - [0x849470, asm, file_92]
+    - [0x84A4E0, data, file_92_data]
+
+  - name: file_93
+    type: code
+    start: 0x84A5C0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_93
+    subsegments:
+    - [0x84A5C0, asm, file_93]
+    - [0x84B690, data, file_93_data]
+
+  - name: file_94
+    type: code
+    start: 0x84B720
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_94
+    subsegments:
+    - [0x84B720, asm, file_94]
+    - [0x84C880, data, file_94_data]
+
+  - name: file_95
+    type: code
+    start: 0x84C910
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_95
+    subsegments:
+    - [0x84C910, asm, file_95]
+    - [0x84D510, data, file_95_data]
+
+  - name: file_96
+    type: code
+    start: 0x84D5A0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_96
+    subsegments:
+    - [0x84D5A0, asm, file_96]
+    - [0x84DC50, data, file_96_data]
+
+  - name: file_97
+    type: code
+    start: 0x84DCF0
+    vram: 0x8038CFC0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_97
+    subsegments:
+    - [0x84DCF0, asm, file_97]
+    - [0x84E9A0, data, file_97_data]
+
+  - name: file_98
+    type: code
+    start: 0x84EA40
+    vram: 0x8038B7E0
+    bss_size: 0x0
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_98
+    subsegments:
+    - [0x84EA40, asm, file_98]
+    - [0x84EF90, data, file_98_data]
+
+  - name: file_99
+    type: code
+    start: 0x8505A0
+    vram: 0x8038B7E0
+    bss_size: 0x440
+    subalign: 4
+    overlay: yes
+    exclusive_ram_id: file_99
+    subsegments:
+    - [0x8505A0, asm, file_99]
+    - [0x8525D0, data, file_99_data]
+    - { start: 0x852B20, type: bss, vram: 0x8038DD60, name: file_99 }
+
+  - name: file_100
+    type: bin
+    start: 0x852B20
+
+  - name: file_101
+    type: bin
+    start: 0x852B30
+
+  - name: file_102
+    type: bin
+    start: 0x8571B0
+
+  - name: file_103
+    type: bin
+    start: 0x85A0D0
+
+  - name: file_104
+    type: bin
+    start: 0x860F30
+
+  - name: file_105
+    type: bin
+    start: 0x8644E0
+
+  - name: file_106
+    type: bin
+    start: 0x8646E0
+
+  - name: file_107
+    type: bin
+    start: 0x866730
+
+  - name: file_108
+    type: bin
+    start: 0x867730
+
+  - name: file_109
+    type: bin
+    start: 0x867F70
+
+  - name: file_110
+    type: bin
+    start: 0x869EB0
+
+  - name: file_111
+    type: bin
+    start: 0x86A8D0
+
+  - name: file_114
+    type: bin
+    start: 0x86AD20
+
+  - name: file_115
+    type: bin
+    start: 0x86B080
+
+  - name: file_116
+    type: bin
+    start: 0x86BA90
+
+  - name: file_117
+    type: bin
+    start: 0x86CDB0
+
+  - name: file_118
+    type: bin
+    start: 0x86FC80
+
+  - name: file_119
+    type: bin
+    start: 0x870050
+
+  - name: file_121
+    type: bin
+    start: 0x8744D0
+
+  - name: file_122
+    type: bin
+    start: 0x874AA0
+
+  - name: file_124
+    type: bin
+    start: 0x8810D0
+
+  - name: file_125
+    type: bin
+    start: 0x886D80
+
+  - name: file_126
+    type: bin
+    start: 0x88A200
+
+  - name: file_127
+    type: bin
+    start: 0x88D000
+
+  - name: file_128
+    type: bin
+    start: 0x88FAE0
+
+  - name: file_129
+    type: bin
+    start: 0x892B40
+
+  - name: file_130
+    type: bin
+    start: 0x895A70
+
+  - name: file_131
+    type: bin
+    start: 0x899220
+
+  - name: file_132
+    type: bin
+    start: 0x89BE80
+
+  - name: file_133
+    type: bin
+    start: 0x89ED20
+
+  - name: file_134
+    type: bin
+    start: 0x8A2890
+
+  - name: file_135
+    type: bin
+    start: 0x8A57F0
+
+  - name: file_136
+    type: bin
+    start: 0x8A9BF0
+
+  - name: file_137
+    type: bin
+    start: 0x8AD720
+
+  - name: file_138
+    type: bin
+    start: 0x8AFD70
+
+  - name: file_139
+    type: bin
+    start: 0x8B23B0
+
+  - name: file_140
+    type: bin
+    start: 0x8B2770
+
+  - name: file_141
+    type: bin
+    start: 0x8B2B60
+
+  - name: file_142
+    type: bin
+    start: 0x8D8090
+
+  - name: file_143
+    type: bin
+    start: 0x8D9E00
+
+  - name: file_144
+    type: bin
+    start: 0x8DDCB0
+
+  - name: file_145
+    type: bin
+    start: 0x8E07D0
+
+  - name: file_146
+    type: bin
+    start: 0x8E33D0
+
+  - name: file_147
+    type: bin
+    start: 0x8E63B0
+
+  - name: file_148
+    type: bin
+    start: 0x8E9130
+
+  - name: file_149
+    type: bin
+    start: 0x8EC250
+
+  - name: file_150
+    type: bin
+    start: 0x8EF060
+
+  - name: file_151
+    type: bin
+    start: 0x8F19C0
+
+  - name: file_152
+    type: bin
+    start: 0x8F6580
+
+  - name: file_153
+    type: bin
+    start: 0x8F95E0
+
+  - name: file_154
+    type: bin
+    start: 0x8FCA30
+
+  - name: file_155
+    type: bin
+    start: 0x8FF510
+
+  - name: file_156
+    type: bin
+    start: 0x9023B0
+
+  - name: file_157
+    type: bin
+    start: 0x904D30
+
+  - name: file_158
+    type: bin
+    start: 0x907D00
+
+  - name: file_159
+    type: bin
+    start: 0x94EC80
+
+  - name: file_160
+    type: bin
+    start: 0x94F4C0
+
+  - name: file_161
+    type: bin
+    start: 0x965150
+
+  - name: file_162
+    type: bin
+    start: 0x970A50
+
+  - name: file_163
+    type: bin
+    start: 0x9795D0
+
+  - name: file_164
+    type: bin
+    start: 0x98DE60
+
+  - name: file_165
+    type: bin
+    start: 0x9A4B50
+
+  - name: file_166
+    type: bin
+    start: 0x9BA5F0
+
+  - name: file_167
+    type: bin
+    start: 0x9BBEB0
+
+  - name: file_168
+    type: bin
+    start: 0x9BC280
+
+  - name: file_169
+    type: bin
+    start: 0x9BCA50
+
+  - name: file_170
+    type: bin
+    start: 0x9BCCB0
+
+  - name: file_171
+    type: bin
+    start: 0x9BD2F0
+
+  - name: file_172
+    type: bin
+    start: 0x9BD6D0
+
+  - name: file_173
+    type: bin
+    start: 0x9BE440
+
+  - name: file_174
+    type: bin
+    start: 0x9C16B0
+
+  - name: file_176
+    type: bin
+    start: 0x9D0290
+
+  - name: file_177
+    type: bin
+    start: 0x9D5510
+
+  - name: file_178
+    type: bin
+    start: 0x9D7C80
+
+  - name: file_179
+    type: bin
+    start: 0x9DA590
+
+  - name: file_180
+    type: bin
+    start: 0x9DA610
+
+  - name: file_182
+    type: bin
+    start: 0x9DA690
+
+  - name: file_183
+    type: bin
+    start: 0x9DAC70
+
+  - name: file_185
+    type: bin
+    start: 0x9DAD40
+
+  - name: file_187
+    type: bin
+    start: 0x9DAE10
+
+  - name: file_189
+    type: bin
+    start: 0x9DCF40
+
+  - name: file_190
+    type: bin
+    start: 0x9DD600
+
+  - name: file_191
+    type: bin
+    start: 0x9DD6D0
+
+  - name: file_193
+    type: bin
+    start: 0x9DEDD0
+
+  - name: file_194
+    type: bin
+    start: 0x9DEE90
+
+  - name: file_195
+    type: bin
+    start: 0x9E0420
+
+  - name: file_196
+    type: bin
+    start: 0x9E2A10
+
+  - name: file_197
+    type: bin
+    start: 0x9E4A40
+
+  - name: file_198
+    type: bin
+    start: 0x9E4DB0
+
+  - name: file_199
+    type: bin
+    start: 0x9E52F0
+
+  - name: file_200
+    type: bin
+    start: 0x9E5C00
+
+  - name: file_201
+    type: bin
+    start: 0x9E6020
+
+  - name: file_202
+    type: bin
+    start: 0x9E64A0
+
+  - name: file_203
+    type: bin
+    start: 0x9E8880
+
+  - name: file_204
+    type: bin
+    start: 0x9E8950
+
+  - name: file_205
+    type: bin
+    start: 0x9E91F0
+
+  - name: file_206
+    type: bin
+    start: 0x9E9B00
+
+  - name: file_207
+    type: bin
+    start: 0x9EA100
+
+  - name: file_208
+    type: bin
+    start: 0x9EA660
+
+  - name: file_209
+    type: bin
+    start: 0x9EAA00
+
+  - name: file_210
+    type: bin
+    start: 0x9EADA0
+
+  - name: file_211
+    type: bin
+    start: 0x9EB140
+
+  - name: file_212
+    type: bin
+    start: 0x9EBE70
+
+  - name: file_213
+    type: bin
+    start: 0x9EC7D0
+
+  - name: file_214
+    type: bin
+    start: 0x9ED130
+
+  - name: file_215
+    type: bin
+    start: 0x9ED6B0
+
+  - name: file_216
+    type: bin
+    start: 0x9EDA30
+
+  - name: file_217
+    type: bin
+    start: 0x9EDD00
+
+  - name: file_218
+    type: bin
+    start: 0x9EE700
+
+  - name: file_219
+    type: bin
+    start: 0x9EF100
+
+  - name: file_220
+    type: bin
+    start: 0x9EFB00
+
+  - name: file_221
+    type: bin
+    start: 0x9F0360
+
+  - name: file_222
+    type: bin
+    start: 0x9F1210
+
+  - name: file_224
+    type: bin
+    start: 0x9FF790
+
+  - name: file_225
+    type: bin
+    start: 0x9FFD30
+
+  - name: file_226
+    type: bin
+    start: 0xA02F90
+
+  - name: file_227
+    type: bin
+    start: 0xA05CD0
+
+  - name: file_228
+    type: bin
+    start: 0xA08490
+
+  - name: file_229
+    type: bin
+    start: 0xA0AA70
+
+  - name: file_230
+    type: bin
+    start: 0xA0DBA0
+
+  - name: file_231
+    type: bin
+    start: 0xA111B0
+
+  - name: file_232
+    type: bin
+    start: 0xA147E0
+
+  - name: file_233
+    type: bin
+    start: 0xA180B0
+
+  - name: file_234
+    type: bin
+    start: 0xA1AD60
+
+  - name: file_235
+    type: bin
+    start: 0xA1DC50
+
+  - name: file_236
+    type: bin
+    start: 0xA20710
+
+  - name: file_237
+    type: bin
+    start: 0xA233A0
+
+  - name: file_238
+    type: bin
+    start: 0xA25840
+
+  - name: file_239
+    type: bin
+    start: 0xA28420
+
+  - name: file_240
+    type: bin
+    start: 0xA66560
+
+  - name: file_241
+    type: bin
+    start: 0xA69120
+
+  - name: file_242
+    type: bin
+    start: 0xA6BA30
+
+  - name: file_243
+    type: bin
+    start: 0xA6F590
+
+  - name: file_244
+    type: bin
+    start: 0xA730D0
+
+  - name: file_245
+    type: bin
+    start: 0xA75E90
+
+  - name: file_246
+    type: bin
+    start: 0xA78FC0
+
+  - name: file_247
+    type: bin
+    start: 0xA8A720
+
+  - name: file_248
+    type: bin
+    start: 0xA8B560
+
+  - name: file_249
+    type: bin
+    start: 0xA8FF80
+
+  - name: file_250
+    type: bin
+    start: 0xA946A0
+
+  - name: file_251
+    type: bin
+    start: 0xA98D50
+
+  - name: file_252
+    type: bin
+    start: 0xA9B670
+
+  - name: file_253
+    type: bin
+    start: 0xA9D870
+
+  - name: file_254
+    type: bin
+    start: 0xAA0140
+
+  - name: file_255
+    type: bin
+    start: 0xAA2760
+
+  - name: file_256
+    type: bin
+    start: 0xAA47D0
+
+  - name: file_257
+    type: bin
+    start: 0xAA7BF0
+
+  - name: file_258
+    type: bin
+    start: 0xAAAA10
+
+  - name: file_260
+    type: bin
+    start: 0xABE350
+
+  - name: file_261
+    type: bin
+    start: 0xAC1900
+
+  - name: file_262
+    type: bin
+    start: 0xAF27A0
+
+  - name: file_263
+    type: bin
+    start: 0xC542D0
+
+  - name: file_264
+    type: bin
+    start: 0xCD4870
+
+  - name: file_265
+    type: bin
+    start: 0xCFE0A0
+
+  - name: file_266
+    type: bin
+    start: 0xCFECC0
+
+  - name: file_267
+    type: bin
+    start: 0xD04B10
+
+  - name: file_268
+    type: bin
+    start: 0xD08350
+
+  - name: file_269
+    type: bin
+    start: 0xD084D0
+
+  - name: file_275
+    type: bin
+    start: 0xD085C0
+
+  - name: file_276
+    type: bin
+    start: 0xD0A340
+
+  - name: file_277
+    type: bin
+    start: 0xD0B8C0
+
+  - name: file_278
+    type: bin
+    start: 0xD0CF10
+
+  - name: file_279
+    type: bin
+    start: 0xD0E820
+
+  - name: file_280
+    type: bin
+    start: 0xD10430
+
+  - name: file_281
+    type: bin
+    start: 0xD129D0
+
+  - name: file_282
+    type: bin
+    start: 0xD15130
+
+  - name: file_283
+    type: bin
+    start: 0xD16C70
+
+  - name: file_284
+    type: bin
+    start: 0xD17F20
+
+  - name: file_285
+    type: bin
+    start: 0xD19380
+
+  - name: file_286
+    type: bin
+    start: 0xD1BB40
+
+  - name: file_287
+    type: bin
+    start: 0xD1D510
+
+  - name: file_292
+    type: bin
+    start: 0xD1EA90
+
+  - name: file_297
+    type: bin
+    start: 0xD1EB50
+
+  - name: file_298
+    type: bin
+    start: 0xD1EF80
+
+  - name: file_299
+    type: bin
+    start: 0xD1F1E0
+
+  - name: file_300
+    type: bin
+    start: 0xD1F490
+
+  - name: file_301
+    type: bin
+    start: 0xD23C00
+
+  - name: file_303
+    type: bin
+    start: 0xD24930
+
+  - name: file_305
+    type: bin
+    start: 0xD4A460
+
+  - name: file_306
+    type: bin
+    start: 0xD4AC40
+
+  - name: file_307
+    type: bin
+    start: 0xD56DD0
+
+  - name: file_308
+    type: bin
+    start: 0xD64590
+
+  - name: file_309
+    type: bin
+    start: 0xD71090
+
+  - name: file_310
+    type: bin
+    start: 0xD7C0F0
+
+  - name: file_311
+    type: bin
+    start: 0xD83AF0
+
+  - name: file_312
+    type: bin
+    start: 0xD96790
+
+  - name: file_313
+    type: bin
+    start: 0xDA46E0
+
+  - name: file_314
+    type: bin
+    start: 0xDB04F0
+
+  - name: file_315
+    type: bin
+    start: 0xDBD140
+
+  - name: file_316
+    type: bin
+    start: 0xDC66F0
+
+  - name: file_317
+    type: bin
+    start: 0xDC6B10
+
+  - name: file_318
+    type: bin
+    start: 0xDC7AA0
+
+  - name: file_319
+    type: bin
+    start: 0xDC86D0
+
+  - name: file_320
+    type: bin
+    start: 0xDC8CA0
+
+  - name: file_321
+    type: bin
+    start: 0xDC9250
+
+  - name: file_322
+    type: bin
+    start: 0xDC9760
+
+  - name: file_323
+    type: bin
+    start: 0xDC9AD0
+
+  - name: file_324
+    type: bin
+    start: 0xDC9DC0
+
+  - name: file_325
+    type: bin
+    start: 0xDC9E40
+
+  - name: file_326
+    type: bin
+    start: 0xDD04E0
+
+  - name: file_328
+    type: bin
+    start: 0xDDBB60
+
+  - name: file_329
+    type: bin
+    start: 0xDE44A0
+
+  - name: file_330
+    type: bin
+    start: 0xDE5DE0
+
+  - name: file_332
+    type: bin
+    start: 0xDE6420
+
+  - name: file_333
+    type: bin
+    start: 0xDE67E0
+
+  - name: file_334
+    type: bin
+    start: 0xDE6FD0
+
+  - name: file_335
+    type: bin
+    start: 0xDE7360
+
+  - name: file_336
+    type: bin
+    start: 0xDE7630
+
+  - name: file_337
+    type: bin
+    start: 0xDEBED0
+
+  - name: file_338
+    type: bin
+    start: 0xDEC890
+
+  - name: file_339
+    type: bin
+    start: 0xDECAE0
+
+  - name: file_340
+    type: bin
+    start: 0xDED5F0
+
+  - name: file_341
+    type: bin
+    start: 0xDEEDF0
+
+  - name: file_342
+    type: bin
+    start: 0xDEF760
+
+  - name: file_343
+    type: bin
+    start: 0xDF0650
+
+  - name: file_344
+    type: bin
+    start: 0xDF0740
+
+  - name: file_345
+    type: bin
+    start: 0xDF0810
+
+  - name: file_346
+    type: bin
+    start: 0xDF0950
+
+  - name: file_348
+    type: bin
+    start: 0xDF2950
+
+  - name: file_349
+    type: bin
+    start: 0xDF4C30
+
+  - name: file_350
+    type: bin
+    start: 0xDF50D0
+
+  - name: file_351
+    type: bin
+    start: 0xE062E0
+
+  - name: file_352
+    type: bin
+    start: 0xE126B0
+
+  - name: file_353
+    type: bin
+    start: 0xE12A40
+
+  - name: file_354
+    type: bin
+    start: 0xE25750
+
+  - name: file_355
+    type: bin
+    start: 0xE264A0
+
+  - name: file_356
+    type: bin
+    start: 0xE26570
+
+  - name: file_357
+    type: bin
+    start: 0xE2BDF0
+
+  - name: file_358
+    type: bin
+    start: 0xE380D0
+
+  - name: file_359
+    type: bin
+    start: 0xE52060
+
+  - name: file_360
+    type: bin
+    start: 0xE68050
+
+  - name: file_361
+    type: bin
+    start: 0xE68240
+
+  - name: file_362
+    type: bin
+    start: 0xE73170
+
+  - name: file_363
+    type: bin
+    start: 0xE7DA70
+
+  - name: file_364
+    type: bin
+    start: 0xE82790
+
+  - name: file_365
+    type: bin
+    start: 0xE83070
+
+  - name: file_366
+    type: bin
+    start: 0xE8AC10
+
+  - name: file_367
+    type: bin
+    start: 0xE8B540
+
+  - name: file_368
+    type: bin
+    start: 0xE8F5E0
+
+  - name: file_369
+    type: bin
+    start: 0xE911A0
+
+  - name: file_370
+    type: bin
+    start: 0xE91620
+
+  - name: file_371
+    type: bin
+    start: 0xE91A30
+
+  - name: file_372
+    type: bin
+    start: 0xE91E20
+
+  - name: file_373
+    type: bin
+    start: 0xE92450
+
+  - name: file_374
+    type: bin
+    start: 0xE92A70
+
+  - name: file_375
+    type: bin
+    start: 0xE92CA0
+
+  - name: file_377
+    type: bin
+    start: 0xEA3A70
+
+  - name: file_378
+    type: bin
+    start: 0xEA8FB0
+
+  - name: file_379
+    type: bin
+    start: 0xEF1B90
+
+  - name: file_380
+    type: bin
+    start: 0xEF2C40
+
+  - name: file_381
+    type: bin
+    start: 0xEF4080
+
+  - name: file_382
+    type: bin
+    start: 0xEF64D0
+
+  - name: file_383
+    type: bin
+    start: 0xEF8210
+
+  - name: file_384
+    type: bin
+    start: 0xEF8A00
+
+  - name: file_385
+    type: bin
+    start: 0xEF8DF0
+
+  - name: file_386
+    type: bin
+    start: 0xEF8F10
+
+  - name: file_387
+    type: bin
+    start: 0xEFD550
+
+  - name: file_388
+    type: bin
+    start: 0xEFF600
+
+  - name: file_389
+    type: bin
+    start: 0xEFF840
+
+  - name: file_392
+    type: bin
+    start: 0xF01D80
+
+  - name: file_394
+    type: bin
+    start: 0xF08FD0
+
+  - name: file_395
+    type: bin
+    start: 0xF0A7A0
+
+  - name: file_396
+    type: bin
+    start: 0xF16A90
+
+  - name: file_397
+    type: bin
+    start: 0xF22670
+
+  - name: file_398
+    type: bin
+    start: 0xF31CC0
+
+  - name: file_399
+    type: bin
+    start: 0xF3D120
+
+  - name: file_400
+    type: bin
+    start: 0xF4E7C0
+
+  - name: file_401
+    type: bin
+    start: 0xF56D50
+
+  - name: file_402
+    type: bin
+    start: 0xF62B80
+
+  - name: file_403
+    type: bin
+    start: 0xF6D100
+
+  - name: file_404
+    type: bin
+    start: 0xF74790
+
+  - name: file_405
+    type: bin
+    start: 0xF805C0
+
+  - name: file_406
+    type: bin
+    start: 0xF83FC0
+
+  - name: file_407
+    type: bin
+    start: 0xF84960
+
+  - name: file_408
+    type: bin
+    start: 0xF853D0
+
+  - name: file_409
+    type: bin
+    start: 0xF85650
+
+  - name: file_410
+    type: bin
+    start: 0xF86080
+
+  - name: file_411
+    type: bin
+    start: 0xF86710
+
+  - name: file_412
+    type: bin
+    start: 0xF86D00
+
+  - name: file_413
+    type: bin
+    start: 0xF873A0
+
+  - name: file_414
+    type: bin
+    start: 0xF87960
+
+  - name: file_415
+    type: bin
+    start: 0xF87F60
+
+  - name: file_416
+    type: bin
+    start: 0xF88300
+
+  - name: file_417
+    type: bin
+    start: 0xF88620
+
+  - name: file_418
+    type: bin
+    start: 0xF88940
+
+  - name: file_419
+    type: bin
+    start: 0xF88B20
+
+  - name: file_420
+    type: bin
+    start: 0xF88E50
+
+  - name: file_422
+    type: bin
+    start: 0xF8EB00
+
+  - name: file_423
+    type: bin
+    start: 0xF97550
+
+  - name: file_424
+    type: bin
+    start: 0xFBDB40
+
+  - name: file_425
+    type: bin
+    start: 0x100A990
+
+  - name: file_426
+    type: bin
+    start: 0x100AA60
+
+  - name: file_428
+    type: bin
+    start: 0x100AD20
+
+  - name: file_435
+    type: bin
+    start: 0x100ADE0
+
+  - name: file_436
+    type: bin
+    start: 0x100B070
+
+  - name: file_437
+    type: bin
+    start: 0x100B780
+
+  - name: file_439
+    type: bin
+    start: 0x100B9D0
+
+  - name: file_440
+    type: bin
+    start: 0x100BAA0
+
+  - name: file_441
+    type: bin
+    start: 0x100ED10
+
+  - name: file_442
+    type: bin
+    start: 0x102AED0
+
+  - name: file_443
+    type: bin
+    start: 0x103BBF0
+
+  - name: file_444
+    type: bin
+    start: 0x1056AD0
+
+  - name: file_445
+    type: bin
+    start: 0x105E2C0
+
+  - name: file_446
+    type: bin
+    start: 0x1073260
+
+  - name: file_447
+    type: bin
+    start: 0x10863F0
+
+  - name: file_448
+    type: bin
+    start: 0x10937B0
+
+  - name: file_449
+    type: bin
+    start: 0x10ABFC0
+
+  - name: file_450
+    type: bin
+    start: 0x10ACDF0
+
+  - name: file_451
+    type: bin
+    start: 0x10AD430
+
+  - name: file_452
+    type: bin
+    start: 0x10ADA70
+
+  - name: file_453
+    type: bin
+    start: 0x10ADC90
+
+  - name: file_454
+    type: bin
+    start: 0x10AE2D0
+
+  - name: file_455
+    type: bin
+    start: 0x10AEE30
+
+  - name: file_456
+    type: bin
+    start: 0x10B01E0
+
+  - name: file_457
+    type: bin
+    start: 0x10B0BB0
+
+  - name: file_458
+    type: bin
+    start: 0x10B2240
+
+  - name: file_459
+    type: bin
+    start: 0x10B4B30
+
+  - name: file_460
+    type: bin
+    start: 0x10B71E0
+
+  - name: file_462
+    type: bin
+    start: 0x10B89D0
+
+  - name: file_463
+    type: bin
+    start: 0x10C25A0
+
+  - name: file_464
+    type: bin
+    start: 0x10C2720
+
+  - name: file_465
+    type: bin
+    start: 0x10CB300
+
+  - name: file_466
+    type: bin
+    start: 0x10D4380
+
+  - name: file_467
+    type: bin
+    start: 0x10E3990
+
+  - name: file_468
+    type: bin
+    start: 0x10F21C0
+
+  - name: file_469
+    type: bin
+    start: 0x10F8070
+
+  - name: file_470
+    type: bin
+    start: 0x110B440
+
+  - name: file_471
+    type: bin
+    start: 0x110B940
+
+  - name: file_472
+    type: bin
+    start: 0x1110850
+
+  - name: file_473
+    type: bin
+    start: 0x1122040
+
+  - name: file_474
+    type: bin
+    start: 0x11372C0
+
+  - name: file_475
+    type: bin
+    start: 0x1137C30
+
+  - name: file_476
+    type: bin
+    start: 0x1137E40
+
+  - name: file_477
+    type: bin
+    start: 0x1138080
+
+  - name: file_478
+    type: bin
+    start: 0x11382E0
+
+  - name: file_479
+    type: bin
+    start: 0x1138950
+
+  - name: file_480
+    type: bin
+    start: 0x113C510
+
+  - name: file_481
+    type: bin
+    start: 0x1141040
+
+  - name: file_483
+    type: bin
+    start: 0x114CA60
+
+  - name: file_484
+    type: bin
+    start: 0x1156AF0
+
+  - name: file_485
+    type: bin
+    start: 0x1157D10
+
+  - name: file_486
+    type: bin
+    start: 0x115AC30
+
+  - name: file_487
+    type: bin
+    start: 0x115DD80
+
+  - name: file_488
+    type: bin
+    start: 0x11626B0
+
+  - name: file_489
+    type: bin
+    start: 0x1164F00
+
+  - name: file_490
+    type: bin
+    start: 0x1167090
+
+  - name: file_491
+    type: bin
+    start: 0x1167720
+
+  - name: file_492
+    type: bin
+    start: 0x1168790
+
+  - name: file_493
+    type: bin
+    start: 0x116A290
+
+  - name: file_494
+    type: bin
+    start: 0x116A660
+
+  - name: file_495
+    type: bin
+    start: 0x116A8A0
+
+  - name: file_497
+    type: bin
+    start: 0x116A8E0
+
+  - name: file_498
+    type: bin
+    start: 0x116A900
+
+  - name: file_499
+    type: bin
+    start: 0x119BDC0
+
+  - name: file_500
+    type: bin
+    start: 0x119C440
+
+  - name: file_501
+    type: bin
+    start: 0x11A5D10
+
+  - name: file_504
+    type: bin
+    start: 0x11A72A0
+
+  - name: file_505
+    type: bin
+    start: 0x11AACB0
+
+  - name: file_509
+    type: bin
+    start: 0x11AAD90
+
+  - name: file_510
+    type: bin
+    start: 0x11ADED0
+
+  - name: file_511
+    type: bin
+    start: 0x11AE370
+
+  - name: file_512
+    type: bin
+    start: 0x11AFF00
+
+  - name: file_513
+    type: bin
+    start: 0x11B2AC0
+
+  - name: file_515
+    type: bin
+    start: 0x11B3A20
+
+  - name: file_516
+    type: bin
+    start: 0x11B4C10
+
+  - name: file_518
+    type: bin
+    start: 0x11BAF90
+
+  - name: file_519
+    type: bin
+    start: 0x11BDFB0
+
+  - name: file_521
+    type: bin
+    start: 0x11BE0C0
+
+  - name: file_522
+    type: bin
+    start: 0x11C37C0
+
+  - name: file_523
+    type: bin
+    start: 0x11C46B0
+
+  - name: file_524
+    type: bin
+    start: 0x11C4B60
+
+  - name: file_525
+    type: bin
+    start: 0x11CA8D0
+
+  - name: file_526
+    type: bin
+    start: 0x11CB080
+
+  - name: file_527
+    type: bin
+    start: 0x11CB4D0
+
+  - name: file_528
+    type: bin
+    start: 0x11CB920
+
+  - name: file_532
+    type: bin
+    start: 0x11D3A70
+
+  - name: file_534
+    type: bin
+    start: 0x11D3B40
+
+  - name: file_540
+    type: bin
+    start: 0x11D90B0
+
+  - name: file_542
+    type: bin
+    start: 0x11E3DB0
+
+  - name: file_543
+    type: bin
+    start: 0x11E6BB0
+
+  - name: file_544
+    type: bin
+    start: 0x11EADE0
+
+  - name: file_545
+    type: bin
+    start: 0x11EB920
+
+  - name: file_547
+    type: bin
+    start: 0x11ECB10
+
+  - name: file_548
+    type: bin
+    start: 0x11ECEC0
+
+  - name: file_550
+    type: bin
+    start: 0x11ED220
+
+  - name: file_552
+    type: bin
+    start: 0x11ED2F0
+
+  - name: file_553
+    type: bin
+    start: 0x11ED760
+
+  - name: file_554
+    type: bin
+    start: 0x11EDD00
+
+  - name: file_557
+    type: bin
+    start: 0x11EE040
+
+  - name: file_558
+    type: bin
+    start: 0x11F46D0
+
+  - name: file_559
+    type: bin
+    start: 0x11F83F0
+
+  - name: file_560
+    type: bin
+    start: 0x11FAC90
+
+  - name: file_561
+    type: bin
+    start: 0x11FAE20
+
+  - name: file_562
+    type: bin
+    start: 0x11FD0D0
+
+  - name: file_563
+    type: bin
+    start: 0x1213940
+
+  - name: file_564
+    type: bin
+    start: 0x1216370
+
+  - name: file_565
+    type: bin
+    start: 0x121EA20
+
+  - name: file_566
+    type: bin
+    start: 0x122C100
+
+  - name: file_567
+    type: bin
+    start: 0x1239130
+
+  - name: file_568
+    type: bin
+    start: 0x124A150
+
+  - name: file_569
+    type: bin
+    start: 0x124D6B0
+
+  - name: file_570
+    type: bin
+    start: 0x1253830
+
+  - name: file_571
+    type: bin
+    start: 0x1253E60
+
+  - name: file_572
+    type: bin
+    start: 0x12541D0
+
+  - name: file_573
+    type: bin
+    start: 0x12545D0
+
+  - name: file_574
+    type: bin
+    start: 0x1257000
+
+  - name: file_576
+    type: bin
+    start: 0x1267120
+
+  - name: file_577
+    type: bin
+    start: 0x126E910
+
+  - name: file_578
+    type: bin
+    start: 0x127BF60
+
+  - name: file_579
+    type: bin
+    start: 0x128C200
+
+  - name: file_580
+    type: bin
+    start: 0x129CE00
+
+  - name: file_581
+    type: bin
+    start: 0x12B5700
+
+  - name: file_582
+    type: bin
+    start: 0x12B9460
+
+  - name: file_583
+    type: bin
+    start: 0x12C4890
+
+  - name: file_584
+    type: bin
+    start: 0x12C64B0
+
+  - name: file_585
+    type: bin
+    start: 0x12C6830
+
+  - name: file_586
+    type: bin
+    start: 0x12C72A0
+
+  - name: file_587
+    type: bin
+    start: 0x12C7D50
+
+  - name: file_588
+    type: bin
+    start: 0x12C83A0
+
+  - name: file_589
+    type: bin
+    start: 0x12C89D0
+
+  - name: file_590
+    type: bin
+    start: 0x12C8DD0
+
+  - name: file_591
+    type: bin
+    start: 0x12CBAD0
+
+  - name: file_593
+    type: bin
+    start: 0x12D1AF0
+
+  - name: file_594
+    type: bin
+    start: 0x12DD5A0
+
+  - name: file_595
+    type: bin
+    start: 0x12DD5E0
+
+  - name: file_596
+    type: bin
+    start: 0x12DD620
+
+  - name: file_597
+    type: bin
+    start: 0x12DD660
+
+  - name: file_598
+    type: bin
+    start: 0x12DD6A0
+
+  - name: file_599
+    type: bin
+    start: 0x12DD6E0
+
+  - name: file_600
+    type: bin
+    start: 0x12DD720
+
+  - name: file_601
+    type: bin
+    start: 0x12DD760
+
+  - name: file_602
+    type: bin
+    start: 0x12DD7A0
+
+  - name: file_603
+    type: bin
+    start: 0x12DD7E0
+
+  - name: file_604
+    type: bin
+    start: 0x12DD820
+
+  - name: file_605
+    type: bin
+    start: 0x12DD860
+
+  - name: file_606
+    type: bin
+    start: 0x12DD8A0
+
+  - name: file_607
+    type: bin
+    start: 0x12DD8E0
+
+  - name: file_608
+    type: bin
+    start: 0x12DD920
+
+  - name: file_609
+    type: bin
+    start: 0x12DD960
+
+  - name: file_610
+    type: bin
+    start: 0x12DD9A0
+
+  - name: file_611
+    type: bin
+    start: 0x12DD9E0
+
+  - name: file_612
+    type: bin
+    start: 0x12DDA20
+
+  - name: file_613
+    type: bin
+    start: 0x12DDA60
+
+  - name: file_614
+    type: bin
+    start: 0x12DDAA0
+
+  - name: file_615
+    type: bin
+    start: 0x12DDAE0
+
+  - name: file_616
+    type: bin
+    start: 0x12DDB20
+
+  - name: file_617
+    type: bin
+    start: 0x12DDB60
+
+  - name: file_618
+    type: bin
+    start: 0x12DDBA0
+
+  - name: file_619
+    type: bin
+    start: 0x12DDBE0
+
+  - name: file_620
+    type: bin
+    start: 0x12DDC20
+
+  - name: file_621
+    type: bin
+    start: 0x12DDC60
+
+  - name: file_622
+    type: bin
+    start: 0x12DDCA0
+
+  - name: file_623
+    type: bin
+    start: 0x12DDCE0
+
+  - [0x2000000]

@@ -1,0 +1,12 @@
+# -O2 is the game-code level. libultra is built per directory at -O1 (os, io),
+# -O2 (gu) and -O3 (audio) -- see the pattern rules in the Makefile. Permuting a
+# libultra function at the wrong level just wastes the run, so edit the -O here
+# to match the directory before starting one.
+compiler_command = "tools/ido-5.3/cc -c -G 0 -non_shared -Xfullwarn -Xcpluscomm -Iinclude -Ilibultra/include -Ilibultra/include/PR -Isrc -Isrc/libultra -I. -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2"
+assembler_command = "mips-linux-gnu-as -EB -mtune=vr4300 -march=vr4300 -mabi=32 -Iinclude -I."
+compiler_type = "ido"
+
+[preserve_macros]
+
+[decompme.compilers]
+"tools/ido-5.3/cc" = "ido5.3"
