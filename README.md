@@ -362,3 +362,14 @@ list; `HybridHeaven-Recomp` followed, and carries `hybridheaven.toml`,
 Tooling and ROM-format work derive from the
 [mnsg](https://github.com/klorfmorf/mnsg) decompilation of Mystical Ninja
 Starring Goemon.
+
+## License
+
+The work in this repository — the decompiled source, configuration, tooling and
+documentation — is dedicated to the public domain under
+[CC0 1.0](LICENSE).
+
+That covers only what was written for this project. The libultra SDK headers
+under `libultra/` are Nintendo's and are not covered, nor is the game itself: no
+game data is included, and building requires your own copy. The submodules under
+`tools/` keep their own licenses.
